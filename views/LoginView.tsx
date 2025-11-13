@@ -1,15 +1,14 @@
+
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
-import { jwtDecode } from 'jwt-decode';
 
 export const LoginView: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { login, loginWithGoogle } = useAuth();
+  const { login } = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,26 +17,6 @@ export const LoginView: React.FC = () => {
     } else {
       setError('E-mail ou senha inválidos.');
     }
-  };
-
-  const handleGoogleSuccess = (credentialResponse: CredentialResponse) => {
-    if (credentialResponse.credential) {
-      const decoded: { name: string; email: string; picture: string } = jwtDecode(
-        credentialResponse.credential
-      );
-      loginWithGoogle({
-        name: decoded.name,
-        email: decoded.email,
-        picture: decoded.picture,
-      });
-      navigate('/home');
-    } else {
-      setError('Google login failed: No credential returned.');
-    }
-  };
-
-  const handleGoogleError = () => {
-    setError('Google login failed. Please try again.');
   };
 
   return (
@@ -81,26 +60,6 @@ export const LoginView: React.FC = () => {
               Entrar
             </button>
           </form>
-
-          <div className="relative my-6">
-              <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                  <div className="w-full border-t border-gray-300" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                  <span className="bg-white px-2 text-gray-500">Ou entre com</span>
-              </div>
-          </div>
-
-          <div className="flex justify-center">
-              <GoogleLogin
-                  onSuccess={handleGoogleSuccess}
-                  onError={handleGoogleError}
-                  theme="outline"
-                  size="large"
-                  shape="pill"
-              />
-          </div>
-
           <p className="mt-6 text-center text-sm text-gray-600">
             Não tem uma conta?{' '}
             <Link to="/register" className="font-medium text-orkut-pink hover:underline">
