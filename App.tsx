@@ -43,6 +43,8 @@ const jwtDecode = (token: string) => {
 // --- PAGE COMPONENTS --- //
 
 const LoginPage: React.FC<{ onLogin: (user: User) => void }> = ({ onLogin }) => {
+  const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+
   const handleLogin = () => {
     // In a real app, you'd have auth logic. Here we just log in as the first user.
     const user = users[0];
@@ -79,21 +81,27 @@ const LoginPage: React.FC<{ onLogin: (user: User) => void }> = ({ onLogin }) => 
 
 
   useEffect(() => {
-    /* global google */
+    if (!GOOGLE_CLIENT_ID) {
+        console.error("Google Client ID not found. Make sure you have set the REACT_APP_GOOGLE_CLIENT_ID environment variable.");
+        const buttonContainer = document.getElementById("googleSignInButton");
+        if(buttonContainer) {
+            buttonContainer.innerHTML = '<p class="text-red-500 text-xs">Login com Google não configurado.</p>';
+        }
+        return;
+    }
+
     if (window.google) {
-        // FIX: Use window.google to access the google object from the global scope.
         window.google.accounts.id.initialize({
-            client_id: "354404045586-f5raolm0jijajub7ctqlgmtt5o51eb1d.apps.googleusercontent.com",
+            client_id: GOOGLE_CLIENT_ID,
             callback: handleGoogleLogin,
         });
 
-        // FIX: Use window.google to access the google object from the global scope.
         window.google.accounts.id.renderButton(
             document.getElementById("googleSignInButton"),
             { theme: "outline", size: "large", text: "continue_with", shape: "pill", width: "320"}
         );
     }
-  }, [handleGoogleLogin]);
+  }, [handleGoogleLogin, GOOGLE_CLIENT_ID]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#B9D3EE]">
