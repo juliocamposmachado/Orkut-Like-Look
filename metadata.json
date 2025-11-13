@@ -1,0 +1,5 @@
+{
+  "name": "Orkut BR Clone",
+  "description": "A nostalgic web application that recreates the user interface and experience of the classic social media platform, Orkut. Built with React, TypeScript, and Tailwind CSS.",
+  "requestFramePermissions": []
+}
