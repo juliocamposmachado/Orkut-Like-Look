@@ -43,7 +43,7 @@ const jwtDecode = (token: string) => {
 // --- PAGE COMPONENTS --- //
 
 const LoginPage: React.FC<{ onLogin: (user: User) => void }> = ({ onLogin }) => {
-  const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+  const GOOGLE_CLIENT_ID = '354404045586-f5raolm0jijajub7ctqlgmtt5o51eb1d.apps.googleusercontent.com';
 
   const handleLogin = () => {
     // In a real app, you'd have auth logic. Here we just log in as the first user.
@@ -82,7 +82,7 @@ const LoginPage: React.FC<{ onLogin: (user: User) => void }> = ({ onLogin }) => 
 
   useEffect(() => {
     if (!GOOGLE_CLIENT_ID) {
-        console.error("Google Client ID not found. Make sure you have set the REACT_APP_GOOGLE_CLIENT_ID environment variable.");
+        console.error("Google Client ID not found. Please check your configuration.");
         const buttonContainer = document.getElementById("googleSignInButton");
         if(buttonContainer) {
             buttonContainer.innerHTML = '<p class="text-red-500 text-xs">Login com Google não configurado.</p>';
